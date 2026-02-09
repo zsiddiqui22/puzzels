@@ -78,16 +78,27 @@ function App() {
           setSelectedSubIndices(cmd.indices);
           triggerCommandFlash();
           break;
+        case 'applyToSub': {
+          const value = cmd.action === 'toggle' ? undefined : cmd.action === 'turnOn';
+          toggleSub(activeCellIndex, cmd.subIndex, value);
+          triggerCommandFlash();
+          break;
+        }
         case 'toggle':
         case 'turnOn':
         case 'turnOff':
-          applyVoiceCommand(activeCellIndex, focusedSubIndex, cmd.type);
+          applyVoiceCommand(
+            activeCellIndex,
+            focusedSubIndex,
+            cmd.type,
+            focus.selectedSubIndices
+          );
           break;
         default:
           break;
       }
     },
-    [focus, setActiveCell, setFocusedSub, setSelectedSubIndices, triggerCommandFlash, applyVoiceCommand]
+    [focus, setActiveCell, setFocusedSub, setSelectedSubIndices, toggleSub, triggerCommandFlash, applyVoiceCommand]
   );
 
   useEffect(() => {
@@ -120,7 +131,7 @@ function App() {
     <div className="app">
       <header className="app__header">
         <h1 className="app__title">Voice Data Grid</h1>
-        <p className="app__hint">Say &quot;select cell number 5&quot;, &quot;select sub cell 4, 5 and 6&quot;, &quot;next cell&quot;, &quot;toggle&quot;.</p>
+        <p className="app__hint">Say &quot;select block 5&quot;, &quot;toggle cell 1&quot; (selected block&apos;s checkbox 1–9), &quot;toggle all&quot;, &quot;next cell&quot;.</p>
       </header>
 
       <div className="app__voice">

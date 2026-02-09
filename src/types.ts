@@ -28,6 +28,7 @@ export type VoiceCommand =
   | { type: 'toggle' }
   | { type: 'turnOn' }
   | { type: 'turnOff' }
+  | { type: 'applyToSub'; subIndex: number; action: 'toggle' | 'turnOn' | 'turnOff' }
   | null;
 
 /** Focus state: which main cell is active, which sub-cell is focused, which sub-cells are selected (multi). */

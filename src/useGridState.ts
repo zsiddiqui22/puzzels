@@ -50,16 +50,29 @@ export function useGridState() {
   }, []);
 
   const applyVoiceCommand = useCallback(
-    (cellIndex: number, subIndex: number | null, type: 'toggle' | 'turnOn' | 'turnOff') => {
-      // If no sub focused, apply to whole cell (all 9 sub-cells) for "toggle/on/off"
-      if (subIndex === null) {
+    (
+      cellIndex: number,
+      subIndex: number | null,
+      type: 'toggle' | 'turnOn' | 'turnOff',
+      selectedSubIndices: number[] = []
+    ) => {
+      const indicesToApply =
+        selectedSubIndices.length > 0
+          ? selectedSubIndices
+          : subIndex !== null
+            ? [subIndex]
+            : null;
+      if (indicesToApply !== null) {
+        const next = type === 'toggle' ? undefined : type === 'turnOn';
+        for (const i of indicesToApply) {
+          if (i >= 0 && i < SUB_PER_CELL) toggleSub(cellIndex, i, next);
+        }
+      } else {
+        // No sub focused and no selection: apply to whole cell (all 9 sub-cells)
         for (let i = 0; i < SUB_PER_CELL; i++) {
           const next = type === 'toggle' ? undefined : type === 'turnOn';
           toggleSub(cellIndex, i, next);
         }
-      } else {
-        const next = type === 'toggle' ? undefined : type === 'turnOn';
-        toggleSub(cellIndex, subIndex, next);
       }
       triggerCommandFlash();
     },
