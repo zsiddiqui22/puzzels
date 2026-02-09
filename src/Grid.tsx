@@ -5,7 +5,7 @@
 import { useEffect } from 'react';
 import { Cell } from './Cell';
 import type { GridState, GridFocus } from './types';
-import { MAIN_COLS, MAIN_ROWS, MAIN_COUNT } from './types';
+import { MAIN_COLS, MAIN_ROWS } from './types';
 
 interface GridProps {
   grid: GridState;
